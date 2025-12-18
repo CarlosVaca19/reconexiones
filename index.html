@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Plan Eco">
+    <title>EEASA - DZON</title>
+
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="css/style.css">
+
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+</head>
+
+<body style="background-image: url('https://img.freepik.com/vector-gratis/fondo-ondulado-gradiente_23-2149123392.jpg?semt=ais_hybrid&w=740&q=80'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed;">
+    <header style="background-color: transparent;">
+        <nav x-data="{ isOpen: false }" class="relative bg-white dark:bg-gray-900">
+        </nav>
+
+        <section style="background-color: transparent;">
+            <div class="container px-6 py-10 mx-auto">
+                <div class="lg:flex lg:items-center lg:-mx-10">
+                    <div class="lg:w-1/2 lg:mx-10">
+                        <h1 class="text-3xl font-semibold text-blue-500 dark:text-white lg:text-3xl">SOLICITA TU RECONEXION</h1>
+                        <p class="mt-4 text-gray-900 dark:text-gray-400">Contacta con nosotros ahora.</p>
+                        <form id="contactForm" method="POST" class="mt-12">
+                            <div class="-mx-2 md:items-center md:flex">
+                                <div class="flex-1 px-2">
+                                    <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Nombres y Apellidos</label>
+                                    <input type="text" name="full-name" placeholder="Ingresa tu nombre" class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
+                                </div>
+                                <div class="flex-1 px-2 mt-4 md:mt-0">
+                                    <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Cuenta contrato o CUEN</label>
+                                    <input type="tel" name="phone-number" placeholder="Ingresa el numero de tu medidor o cta contrato" class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
+                                </div>
+                            </div>
+                            <div class="w-full mt-4">
+                                <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Solicitud</label>
+                                <select name="plan-type" class="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40">
+                                    <option value="pymes">RECONEXION</option>
+                                </select>
+                            </div>
+                            <div class="w-full mt-4">
+                                <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Direccion</label>
+                                <textarea name="message" class="block w-full h-32 px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md md:h-56 dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"></textarea>
+                            </div>
+                            <button type="submit" class="inline-flex items-center justify-center w-full px-5 py-3 mt-4 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring focus:ring-blue-300 focus:ring-opacity-80">
+                                Enviar
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+        </div>
+        </div>
+        </section>
+
+        <script>
+            document.getElementById('contactForm').addEventListener('submit', function(event) {
+                event.preventDefault(); // Evitar que el formulario se envíe de manera predeterminada
+
+                var form = this;
+                var formData = new FormData(form);
+
+                var message = `RECONEXION
+Nombre: ${formData.get('full-name')}
+Cuenta: ${formData.get('phone-number')}
+Solicitud: ${formData.get('plan-type')}
+Direccion: ${formData.get('message')}`;
+
+                var phoneNumbers = ['593979351976']; // Lista de números de WhatsApp
+                var randomNumber = phoneNumbers[Math.floor(Math.random() * phoneNumbers.length)]; // Selección aleatoria de un número
+                var whatsappLink = `https://wa.me/${randomNumber}?text=${encodeURIComponent(message)}`;
+
+                // Enviar los datos al servidor para guardarlos en la base de datos
+                fetch('guardar_eco.php', {
+                        method: 'POST',
+                        body: formData
+                    }).then(response => response.text())
+                    .then(result => {
+                        // Manejar la respuesta del servidor aquí
+                        if (result === 'success') {
+                            // Redirigir a WhatsApp
+                            window.open(whatsappLink, '_blank');
+                        } else {
+                            alert('Error al guardar los datos.');
+                        }
+                    }).catch(error => {
+                        console.error('Error:', error);
+                        alert('Hubo un error al procesar el formulario.');
+                    });
+            });
+        </script>
+
+</body>
+
+</html>
