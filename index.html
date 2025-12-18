@@ -76,26 +76,12 @@ Direccion: ${formData.get('message')}`;
                 var randomNumber = phoneNumbers[Math.floor(Math.random() * phoneNumbers.length)]; // Selección aleatoria de un número
                 var whatsappLink = `https://wa.me/${randomNumber}?text=${encodeURIComponent(message)}`;
 
-                // Enviar los datos al servidor para guardarlos en la base de datos
-                fetch('guardar_eco.php', {
-                        method: 'POST',
-                        body: formData
-                    }).then(response => response.text())
-                    .then(result => {
-                        // Manejar la respuesta del servidor aquí
-                        if (result === 'success') {
                             // Redirigir a WhatsApp
                             window.open(whatsappLink, '_blank');
-                        } else {
-                            alert('Error al guardar los datos.');
-                        }
-                    }).catch(error => {
-                        console.error('Error:', error);
-                        alert('Hubo un error al procesar el formulario.');
-                    });
             });
         </script>
 
 </body>
+
 
 </html>
